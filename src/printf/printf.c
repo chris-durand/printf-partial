@@ -655,11 +655,6 @@ struct scaling_factor {
 
 static floating_point_t apply_scaling(floating_point_t num, struct scaling_factor normalization)
 {
-  return normalization.multiply ? num * normalization.raw_factor : num / normalization.raw_factor;
-}
-
-static floating_point_t unapply_scaling(floating_point_t normalized, struct scaling_factor normalization)
-{
 #ifdef __GNUC__
 // accounting for a static analysis bug in GCC 6.x and earlier
 #pragma GCC diagnostic push
@@ -669,6 +664,11 @@ static floating_point_t unapply_scaling(floating_point_t normalized, struct scal
 #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #endif
 #endif
+  return normalization.multiply ? num * normalization.raw_factor : num / normalization.raw_factor;
+}
+
+static floating_point_t unapply_scaling(floating_point_t normalized, struct scaling_factor normalization)
+{
   return normalization.multiply ? normalized / normalization.raw_factor : normalized * normalization.raw_factor;
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
